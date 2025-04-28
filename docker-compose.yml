@@ -12,6 +12,8 @@ services:
       - backend
     networks:
       - app
+    env_file:
+      - .env.production
 
   backend:
     image: ghcr.io/abhisheksrikanth/saturchat-backend:latest
