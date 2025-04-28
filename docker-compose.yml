@@ -1,6 +1,6 @@
 services:
   frontend:
-    image: ghcr.io/AbhishekSrikanth/saturchat-frontend:latest
+    image: ghcr.io/abhisheksrikanth/saturchat-frontend:latest
     volumes:
       - ./nginx/default.conf:/etc/nginx/conf.d/default.conf
       - media:/app/media
@@ -12,7 +12,7 @@ services:
       - app
 
   backend:
-    image: ghcr.io/AbhishekSrikanth/saturchat-backend:latest
+    image: ghcr.io/abhisheksrikanth/saturchat-backend:latest
     env_file:
       - .env.production
     depends_on:
