@@ -2,7 +2,7 @@ services:
   frontend:
     image: ghcr.io/abhisheksrikanth/saturchat-frontend:latest
     volumes:
-      - ./nginx/default.conf:/etc/nginx/conf.d/default.conf
+      - ./nginx/default.conf:/etc/nginx/conf.d/default.conf:z
       - /etc/letsencrypt:/etc/letsencrypt
       - media:/app/media
     ports:
