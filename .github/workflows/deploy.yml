@@ -1,0 +1,27 @@
+name: Deploy to DigitalOcean
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Deployment Repo
+        uses: actions/checkout@v3
+
+      - name: SSH into Droplet and Deploy
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.DO_HOST }}
+          username: ${{ secrets.DO_USER }}
+          key: ${{ secrets.DO_SSH_KEY }}
+          script: |
+            cd /root/saturchat/saturchat-deployment
+            git pull origin main
+            docker-compose pull frontend backend celery celery-beat
+            docker-compose up -d
