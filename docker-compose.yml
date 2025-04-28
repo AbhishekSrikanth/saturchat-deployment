@@ -1,0 +1,70 @@
+services:
+  frontend:
+    image: ghcr.io/AbhishekSrikanth/saturchat-frontend:latest
+    volumes:
+      - ./nginx/default.conf:/etc/nginx/conf.d/default.conf
+      - media:/app/media
+    ports:
+      - "80:80"
+    depends_on:
+      - backend
+    networks:
+      - app
+
+  backend:
+    image: ghcr.io/AbhishekSrikanth/saturchat-backend:latest
+    env_file:
+      - .env.production
+    depends_on:
+      - db
+      - redis
+    volumes:
+      - media:/app/media
+      - staticfiles:/app/staticfiles
+    networks:
+      - app
+
+  db:
+    image: postgres:16
+    volumes:
+      - postgres_data:/var/lib/postgresql/data/
+    env_file:
+      - .env.production
+    networks:
+      - app
+
+  redis:
+    image: redis:7
+    networks:
+      - app
+
+  celery:
+    image: ghcr.io/AbhishekSrikanth/saturchat-backend:latest
+    command: celery -A saturchat worker -l info
+    env_file:
+      - .env.production
+    depends_on:
+      - redis
+      - backend
+    networks:
+      - app
+
+  celery-beat:
+    image: ghcr.io/AbhishekSrikanth/saturchat-backend:latest
+    command: celery -A saturchat beat -l info
+    env_file:
+      - .env.production
+    depends_on:
+      - redis
+      - backend
+    networks:
+      - app
+
+volumes:
+  postgres_data:
+  media:
+  staticfiles:
+
+networks:
+  app:
+    driver: bridge
