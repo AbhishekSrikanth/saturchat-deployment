@@ -39,7 +39,7 @@ services:
       - app
 
   celery:
-    image: ghcr.io/AbhishekSrikanth/saturchat-backend:latest
+    image: ghcr.io/abhisheksrikanth/saturchat-backend:latest
     command: celery -A saturchat worker -l info
     env_file:
       - .env.production
@@ -50,7 +50,7 @@ services:
       - app
 
   celery-beat:
-    image: ghcr.io/AbhishekSrikanth/saturchat-backend:latest
+    image: ghcr.io/abhisheksrikanth/saturchat-backend:latest
     command: celery -A saturchat beat -l info
     env_file:
       - .env.production
